@@ -2,12 +2,12 @@ export function CreatePost() {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div>
-        <lable htmlFor='create-title'>Title: </lable>
+        <label htmlFor='create-title'>Title: </label>
         <input type='text' name='create-title' id='create-title' />
       </div>
       <br />
       <div>
-        <lable htmlFor='create-author'>Author: </lable>
+        <label htmlFor='create-author'>Author: </label>
         <input type='text' name='create-author' id='create-author' />
       </div>
       <br />
