@@ -10,20 +10,20 @@ import {
 
 export function postsRoutes(app) {
   app.get('/api/v1/posts', async (req, res) => {
-    const { sortBy, orderBy, author, tags } = req.query
-    const options = { sortBy, orderBy }
+    const { sortBy, sortOrder, author, tag } = req.query
+    const options = { sortBy, sortOrder }
 
     try {
-      if (sortBy && orderBy) {
+      if (author && tag) {
         return res
           .status(400)
           .json({ error: 'query by author or tag, not both' })
       } else if (author) {
         return res.json(await listPostsByAuthor(author, options))
-      } else if (tags) {
-        return res.json(await listPostsByTag(tags, options))
+      } else if (tag) {
+        return res.json(await listPostsByTag(tag, options))
       } else {
-        return res.json(await listAllPosts())
+        return res.json(await listAllPosts(options))
       }
     } catch (err) {
       console.error(`error listinng posts`, err)

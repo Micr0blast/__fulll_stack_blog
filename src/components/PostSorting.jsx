@@ -22,7 +22,7 @@ export function PostSorting({
           </option>
         ))}
       </select>
-      {'/'}
+      {' / '}
       <label htmlFor='sortOrder'>Sort Order: </label>
       <select
         name='sortOrder'

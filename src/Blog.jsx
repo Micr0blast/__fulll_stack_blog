@@ -1,4 +1,3 @@
-import './App.css'
 import { PostFilter } from './components/PostFilter.jsx'
 import { CreatePost } from './components/CreatePost.jsx'
 import { PostSorting } from './components/PostSorting.jsx'
