@@ -1,10 +1,11 @@
-import { PostFilter } from './components/PostFilter.jsx'
-import { CreatePost } from './components/CreatePost.jsx'
-import { PostSorting } from './components/PostSorting.jsx'
-import { PostList } from './components/PostList.jsx'
-import { getPosts } from './api/posts.jsx'
+import { PostFilter } from './components/PostFilter.tsx'
+import { CreatePost } from './components/CreatePost.tsx'
+import { PostSorting } from './components/PostSorting.tsx'
+import { PostList } from './components/PostList.tsx'
+import { getPosts } from './api/posts.ts'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import { PostData } from './types.ts'
 
 export function Blog() {
   const [author, setAuthor] = useState('')
@@ -16,14 +17,13 @@ export function Blog() {
     queryFn: () => getPosts({ author, sortBy, sortOrder }),
   })
 
-  const posts = postsQuery.data ?? []
+  const posts: PostData[] = postsQuery.data ?? []
 
   return (
     <div style={{ padding: 8 }}>
       <CreatePost />
       <br />
       <hr />
-      Filter by:
       <PostFilter
         field='author'
         value={author}

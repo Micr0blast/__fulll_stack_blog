@@ -1,12 +1,25 @@
 import PropTypes from 'prop-types'
 
+interface PostSortingProps {
+  /** Data-Fields which can be used for sorting */
+  fields: string[],
+  /** State Variable for sorting variable */
+  value: string,
+    /** SetterFn for sorting variable */
+  onChange: (value:string) => void,
+  /** State Variable for ordering variable */
+  orderValue: string,
+  /** SetterFn for ordering variable */
+  onOrderChange: (value: string) => void
+}
+
 export function PostSorting({
   fields = [],
   value,
   onChange,
   orderValue,
   onOrderChange,
-}) {
+}: PostSortingProps) {
   return (
     <div>
       <label htmlFor='sortBy'>Sort by: </label>

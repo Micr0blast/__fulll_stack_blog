@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-export function PostFilter({ field, value, onChange }) {
+export function PostFilter({ field, value, onChange }: {field:string, value:string, onChange: (value:string)=> void}) {
   return (
     <div>
       <label htmlFor={`filter-${field}`}>Filter by: {field}</label>

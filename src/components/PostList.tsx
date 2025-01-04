@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import { Fragment } from 'react'
-import { Post } from './Post.jsx'
+import { Post } from './Post.tsx'
+import { PostData } from '../types.ts'
 
-export function PostList({ posts = [] }) {
+export function PostList({posts= []} : {posts: PostData[]}) {
   // render a list of posts
   return (
     <div>

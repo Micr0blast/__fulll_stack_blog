@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types'
+import { PostData } from '../types'
 
-export function Post({ title, contents, author }) {
+export function Post(data: PostData) {
   return (
     <article>
-      <h3>{title}</h3>
-      <div>{contents}</div>
-      {author && (
+      <h3>{data.title}</h3>
+      <div>{data.contents}</div>
+      {data.author && (
         <em>
           <br />
-          Written by <strong>{author}</strong>
+          Written by <strong>{data.author}</strong>
         </em>
       )}
     </article>
