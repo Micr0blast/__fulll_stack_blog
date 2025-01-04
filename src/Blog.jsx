@@ -3,8 +3,8 @@ import { PostFilter } from './components/PostFilter.jsx'
 import { CreatePost } from './components/CreatePost.jsx'
 import { PostSorting } from './components/PostSorting.jsx'
 import { PostList } from './components/PostList.jsx'
-import { useQuery } from '@tanstack/react-query'
 import { getPosts } from './api/posts.jsx'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
 export function Blog() {
