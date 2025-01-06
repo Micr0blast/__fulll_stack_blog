@@ -9,18 +9,20 @@ export function userRoutes(app) {
   /** only get and create routes for now */
 
   app.get('/api/v1/users', async (req, res) => {
-    const { sortBy, sortOrder, isAuthor } = req.query
+    const { sortBy, sortOrder, userType } = req.query
     const options = { sortBy, sortOrder }
     try {
-      if (isAuthor) {
+      if (userType == 'author') {
         const authors = await getAllAuthors(options)
         if (authors.length > 0) {
           return res.json(authors)
         } else {
           return res.status(204).end()
         }
-      } else if (!isAuthor) {
+      } else if (userType == 'reader') {
         return res.json(await getAllReaders(options))
+      } else if (userType) {
+        return res.status(400).json({ error: 'unknown type' })
       } else {
         return res.json(await listAllUsers(options))
       }

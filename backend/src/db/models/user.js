@@ -8,7 +8,7 @@ const userSchema = new Schema(
     surname: String,
     gender: String,
     age: Number,
-    isAuthor: { type: Boolean, default: false },
+    userType: { type: String, default: 'reader' },
   },
   { timestamps: true },
 )

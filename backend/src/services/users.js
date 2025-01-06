@@ -38,11 +38,11 @@ export async function getUserById(userId) {
 }
 
 export async function getAllAuthors(options) {
-  return await listUsers({ isAuthor: true }, options)
+  return await listUsers({ userType: 'author' }, options)
 }
 
 export async function getAllReaders(options) {
-  return await listUsers({ isAuthor: false }, options)
+  return await listUsers({ userType: 'reader' }, options)
 }
 
 export async function deleteUser(userId) {
