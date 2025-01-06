@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import { initDatabase } from './db/init.js'
 import { Post } from './db/models/post.js'
 
@@ -14,4 +16,5 @@ await Post.findByIdAndUpdate(createdPost._id, {
   $set: { contents: 'This is an example of an updated Post' },
 })
 const posts = await Post.find()
+
 console.log(posts)

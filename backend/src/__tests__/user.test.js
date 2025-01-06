@@ -7,6 +7,8 @@ import {
   deleteUser,
   getUserById,
   listAllUsers,
+  getAllAuthors,
+  getAllReaders,
 } from '../services/users.js'
 
 import { User } from '../db/models/user.js'
@@ -92,6 +94,7 @@ const sampleUsers = [
     surname: 'Plt',
     gender: 'male',
     age: 25,
+    isAuthor: true,
   },
   {
     username: 'sera',
@@ -100,6 +103,7 @@ const sampleUsers = [
     surname: 'Plts',
     gender: 'female',
     age: 33,
+    isAuthor: true,
   },
   {
     username: 'dorn',
@@ -120,6 +124,45 @@ beforeEach(async () => {
     const newUser = new User(user)
     createdUsers.push(await newUser.save())
   }
+})
+
+describe('Getting user', () => {
+  test('should list only authors', async () => {
+    const authors = await getAllAuthors()
+    expect(authors.length).toEqual(2)
+  })
+
+  test('should list only readers', async () => {
+    const readers = await getAllReaders()
+    expect(readers.length).toEqual(1)
+  })
+
+  test('should return in descending order by creation', async () => {
+    const options = {
+      sortBy: 'createdAt',
+      sortOrder: 'descending',
+    }
+    const users = await listAllUsers(options)
+    const sortedUsers = createdUsers.sort((a, b) => b.createdAt - a.createdAt)
+
+    expect(users.map((a) => a.createdAt)).toEqual(
+      sortedUsers.map((b) => b.createdAt),
+    )
+  })
+
+  test('should return in ascending order by creation', async () => {
+    const options = {
+      sortBy: 'createdAt',
+      sortOrder: 'ascending',
+    }
+
+    const users = await listAllUsers(options)
+    const sortedUsers = createdUsers.sort((a, b) => a.createdAt - b.createdAt)
+
+    expect(users.map((a) => a.createdAt)).toEqual(
+      sortedUsers.map((b) => b.createdAt),
+    )
+  })
 })
 
 describe('Updating User', () => {
