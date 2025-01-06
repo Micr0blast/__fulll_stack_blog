@@ -94,7 +94,7 @@ const sampleUsers = [
     surname: 'Plt',
     gender: 'male',
     age: 25,
-    isAuthor: true,
+    userType: 'author',
   },
   {
     username: 'sera',
@@ -103,7 +103,7 @@ const sampleUsers = [
     surname: 'Plts',
     gender: 'female',
     age: 33,
-    isAuthor: true,
+    userType: 'author',
   },
   {
     username: 'dorn',
