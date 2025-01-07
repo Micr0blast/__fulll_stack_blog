@@ -1,0 +1,31 @@
+name: Blog Backend CI
+on:
+  push:
+    branches:
+      - main
+  pull-request:
+    branches:
+      - main
+
+job:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Uses Node.Js ${{ matrix.node-version }}
+        uses: actions/node-setup@v3
+        with: 
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Run linter on frontend
+        run: npm run lin
+      - name: Build frontend
+        run: npm run build
