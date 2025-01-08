@@ -8,6 +8,8 @@ import {
   deletePost,
 } from '../services/posts.js'
 
+import { requireAuth } from '../middleware/jwt.js'
+
 export function postsRoutes(app) {
   app.get('/api/v1/posts', async (req, res) => {
     const { sortBy, sortOrder, author, tag } = req.query
@@ -41,7 +43,7 @@ export function postsRoutes(app) {
       return res.status(500).end()
     }
   })
-  app.post('/api/v1/posts', async (req, res) => {
+  app.post('/api/v1/posts', requireAuth, async (req, res) => {
     try {
       const post = await createPost(req.body)
       return res.json(post)
@@ -50,7 +52,7 @@ export function postsRoutes(app) {
       return res.status(500).end()
     }
   })
-  app.patch('/api/v1/posts/:id', async (req, res) => {
+  app.patch('/api/v1/posts/:id', requireAuth, async (req, res) => {
     try {
       const postId = req.params.id
       const post = await updatePost(postId, req.body)
@@ -60,7 +62,7 @@ export function postsRoutes(app) {
       return res.status(500).end()
     }
   })
-  app.delete('/api/v1/posts/:id', async (req, res) => {
+  app.delete('/api/v1/posts/:id', requireAuth, async (req, res) => {
     try {
       const postId = req.params.id
       const post = await deletePost(postId)

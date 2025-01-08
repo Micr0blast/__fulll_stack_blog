@@ -1,4 +1,4 @@
-import { createUserAuth } from '../services/userauth.js'
+import { createUserAuth, loginUser } from '../services/userauth.js'
 
 export function userAuthRoutes(app) {
   app.post('/api/v1/user/signup', async (req, res) => {
@@ -11,7 +11,29 @@ export function userAuthRoutes(app) {
         `failure to create the user, does the user already exist?`,
         err,
       )
-      res.status(400).end()
+      res
+        .status(400)
+        .json({
+          error: `failure to create the user, does the user already exist?`,
+        })
+    }
+  })
+
+  app.post('/api/v1/user/login', async (req, res) => {
+    try {
+      const token = await loginUser(req.body)
+      console.log(token)
+      return res.status(200).send({ token })
+    } catch (err) {
+      console.error(
+        'login failed, did you enter the correct username/password?',
+        err,
+      )
+      res
+        .status(400)
+        .json({
+          error: 'login failed, did you enter the correct username/password?',
+        })
     }
   })
 }
