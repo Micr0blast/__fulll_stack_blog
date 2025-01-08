@@ -1,20 +1,19 @@
 import { Post } from '../db/models/post.js'
 import { UserAuth } from '../db/models/userauth.js'
 
-export async function createPost({ title, author, contents, tags }) {
-  const post = new Post({ title, author, contents, tags })
+export async function createPost(userId, { title, contents, tags }) {
+  const post = new Post({ title, author: userId, contents, tags })
   return await post.save()
 }
 
-export async function deletePost(postId) {
-  return await Post.deleteOne({ _id: postId })
+export async function deletePost(userId, postId) {
+  return await Post.deleteOne({ _id: postId, author: userId })
 }
 
-export async function updatePost(postId, { title, author, contents, tags }) {
-  const authorObj = await UserAuth.findOne({ username: author })
+export async function updatePost(userId, postId, { title, contents, tags }) {
   return await Post.findOneAndUpdate(
     { _id: postId },
-    { $set: { title, author: authorObj._id, contents, tags } },
+    { $set: { title, contents, tags } },
     { new: true },
   )
 }
