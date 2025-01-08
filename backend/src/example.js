@@ -2,11 +2,21 @@ import dotenv from 'dotenv'
 dotenv.config()
 import { initDatabase } from './db/init.js'
 import { Post } from './db/models/post.js'
+import { UserAuth } from './db/models/userauth.js'
 
 await initDatabase()
+
+const user = new UserAuth({
+  username: 'stpl',
+  password: 'chicken',
+})
+
+const createdUser = await user.save()
+console.log(createdUser)
+
 const post = new Post({
   title: 'Hello Mongoose!',
-  author: 'Stefan Plötz',
+  author: createdUser._id,
   contents: 'This is an example Post using Mongoose',
   tags: ['examples', 'javascript', 'mongoose', 'mongodb'],
 })

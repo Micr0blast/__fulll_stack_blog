@@ -12,12 +12,44 @@ import {
 } from '../services/posts.js'
 
 import { Post } from '../db/models/post.js'
+import { UserAuth } from '../db/models/userauth.js'
+
+const sampleUsers = [
+  { username: 'stpl', password: 'banana' },
+  { username: 'palp', password: 'bananarama' },
+  { username: 'thren', password: 'bananadama' },
+]
+
+const samplePosts = [
+  { title: 'Reddit posts', tags: ['Space', 'Star Wars'] },
+  { title: 'Riddick is only a victim', tags: ['Space'] },
+  { title: ' Anakin did nothing worng', tags: ['Star Wars'] },
+]
+
+let createdSamplePosts = []
+
+let createdSampleUsers = []
+
+beforeEach(async () => {
+  await UserAuth.deleteMany({})
+  await Post.deleteMany({})
+  createdSampleUsers = []
+  createdSamplePosts = []
+  for (let i = 0; i < sampleUsers.length; i++) {
+    const createdUser = new UserAuth(sampleUsers[i])
+    createdSampleUsers.push(await createdUser.save())
+    let post = samplePosts[i]
+    post.author = createdUser._id
+    const createdPost = new Post(post)
+    createdSamplePosts.push(await createdPost.save())
+  }
+})
 
 describe('creating posts', () => {
   test('creating post with all parameters should succeed', async () => {
     const post = {
       title: 'Test article; all params',
-      author: 'Stefan Ploetz',
+      author: createdSampleUsers[0]._id,
       contents: 'This post is stored inside a mongoDb using mongoose',
       tags: ['mongoose', 'mongodb'],
     }
@@ -30,7 +62,7 @@ describe('creating posts', () => {
   })
   test('creating post without title should fail', async () => {
     const post = {
-      author: 'STPL',
+      author: createdSampleUsers[2]._id,
       contents: 'This post is stored inside a mongoDb using mongoose',
       tags: ['mongoose', 'mongodb'],
     }
@@ -44,27 +76,14 @@ describe('creating posts', () => {
   test('creating post with minmal parameters should succeed', async () => {
     const post = {
       title: 'Test title',
+      author: (
+        await new UserAuth({ username: 'chicken', password: 'fried' }).save()
+      )._id,
     }
     const createdPost = await createPost(post)
     expect(createdPost._id).toBeInstanceOf(mongoose.Types.ObjectId)
+    expect(createdPost.author).toBeInstanceOf(mongoose.Types.ObjectId)
   })
-})
-
-// setup state for data
-const samplePosts = [
-  { title: 'Reddit posts', author: 'Stpl', tags: ['Space', 'Star Wars'] },
-  { title: 'Riddick is only a victim', author: 'Stpl', tags: ['Space'] },
-  { title: ' Anakin did nothing worng', author: 'Palp', tags: ['Star Wars'] },
-]
-
-let createdSamplePosts = []
-beforeEach(async () => {
-  await Post.deleteMany({}) // deleta all posts in DB
-  createdSamplePosts = []
-  for (const post of samplePosts) {
-    const createdPost = new Post(post)
-    createdSamplePosts.push(await createdPost.save())
-  }
 })
 
 describe('querying posts', () => {
@@ -96,8 +115,8 @@ describe('querying posts', () => {
     )
   })
   test('get all posts by author:stpl', async () => {
-    const posts = await listPostsByAuthor('Stpl')
-    expect(posts.length).toEqual(2)
+    const posts = await listPostsByAuthor('stpl')
+    expect(posts.length).toEqual(1)
   })
   test('get all posts by tag:Star Wars', async () => {
     const posts = await listPostsByTag('Star Wars')
@@ -119,21 +138,21 @@ describe('getting a post', () => {
 describe('updating a post', () => {
   test('should update given property', async () => {
     const postId = createdSamplePosts[0]._id
-    await updatePost(postId, { author: 'Deoxys' })
+    await updatePost(postId, { author: 'palp' })
     const updatedPost = await getPostById(postId)
-    expect(updatedPost.author).toEqual('Deoxys')
+    expect(updatedPost.author).toEqual(createdSampleUsers[1]._id)
   })
   test('should not update other properties', async () => {
     const postId = createdSamplePosts[0]._id
-    await updatePost(postId, { author: 'Deoxys' })
+    await updatePost(postId, { author: 'palp' })
     const updatedPost = await getPostById(postId)
-    expect(updatedPost.author).toEqual('Deoxys')
+    expect(updatedPost.author).toEqual(createdSampleUsers[1]._id)
     expect(updatedPost.title).toEqual('Reddit posts')
     expect(updatedPost.tags).toEqual(['Space', 'Star Wars'])
   })
   test('should update Timestamps', async () => {
     const postId = createdSamplePosts[0]._id
-    await updatePost(postId, { author: 'Test author' })
+    await updatePost(postId, { author: 'palp' })
     const updatedPost = await getPostById(postId)
     expect(updatedPost.updatedAt.getTime()).toBeGreaterThan(
       updatedPost.createdAt.getTime(),
@@ -141,7 +160,7 @@ describe('updating a post', () => {
   })
   test('should return null if Id does not exist', async () => {
     const postId = '000000000000000000000000'
-    const updatedPost = await updatePost(postId, { author: 'Testing author' })
+    const updatedPost = await updatePost(postId, { author: 'palp' })
     expect(updatedPost).toBe(null)
   })
 })

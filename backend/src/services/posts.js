@@ -1,4 +1,5 @@
 import { Post } from '../db/models/post.js'
+import { UserAuth } from '../db/models/userauth.js'
 
 export async function createPost({ title, author, contents, tags }) {
   const post = new Post({ title, author, contents, tags })
@@ -10,9 +11,10 @@ export async function deletePost(postId) {
 }
 
 export async function updatePost(postId, { title, author, contents, tags }) {
+  const authorObj = await UserAuth.findOne({ username: author })
   return await Post.findOneAndUpdate(
     { _id: postId },
-    { $set: { title, author, contents, tags } },
+    { $set: { title, author: authorObj._id, contents, tags } },
     { new: true },
   )
 }
@@ -33,7 +35,9 @@ export async function listAllPosts(options) {
 }
 
 export async function listPostsByAuthor(author, options) {
-  return await listPosts({ author }, options)
+  const authorObject = await UserAuth.findOne({ username: author })
+
+  return await listPosts({ author: authorObject._id }, options)
 }
 
 export async function listPostsByTag(tags, options) {
