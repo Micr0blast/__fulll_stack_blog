@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 export const Login: FC = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const {token, setToken}= useAuth()
+    const [, setToken]= useAuth()
 
     const navigate = useNavigate()
 

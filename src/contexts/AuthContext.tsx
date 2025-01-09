@@ -29,4 +29,7 @@ AuthContextProvider.propTypes = {
     children: PropTypes.element.isRequired
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = ():[string, Dispatch<SetStateAction<string>>] => {
+    const {token, setToken} = useContext(AuthContext)
+    return [token, setToken]
+}
