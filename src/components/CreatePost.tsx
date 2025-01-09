@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { createPost } from '../api/posts.ts'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { PostData } from '../types.ts'
@@ -15,7 +15,7 @@ export function CreatePost() {
     onSuccess: ()=>queryClient.invalidateQueries({queryKey:['posts']}),
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     createPostsMutation.mutate()
   }
