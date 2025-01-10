@@ -24,7 +24,6 @@ export function userAuthRoutes(app) {
   app.post('/api/v1/user/login', async (req, res) => {
     try {
       const token = await loginUser(req.body)
-      console.log(token)
       return res.status(200).send({ token })
     } catch (err) {
       console.error(
@@ -41,7 +40,7 @@ export function userAuthRoutes(app) {
   app.get('/api/v1/users/:id', async (req, res) => {
     const userId = req.params.id
     try {
-      const userInfo = getUserInfoById(userId)
+      const userInfo = await getUserInfoById(userId)
       return res.status(200).send(userInfo)
     } catch (err) {
       res.status(404).end()

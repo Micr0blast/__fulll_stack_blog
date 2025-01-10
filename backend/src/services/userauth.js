@@ -30,7 +30,7 @@ export async function loginUser({ username, password }) {
 /** TODO change signup to email based sign in and pull apart login and authorisation and user profile info fetching */
 export async function getUserInfoById(userId) {
   try {
-    const user = UserAuth.findById(userId)
+    const user = await UserAuth.findById(userId)
     if (!user) return { username: userId }
     return { username: user.username }
   } catch (err) {
