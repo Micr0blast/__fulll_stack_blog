@@ -34,9 +34,9 @@ export async function listAllPosts(options) {
 }
 
 export async function listPostsByAuthor(author, options) {
-  const authorObject = await UserAuth.findOne({ username: author })
-
-  return await listPosts({ author: authorObject._id }, options)
+  const users = await UserAuth.findOne({ username: author })
+  if (!users) return []
+  return await listPosts({ author: users._id }, options)
 }
 
 export async function listPostsByTag(tags, options) {
