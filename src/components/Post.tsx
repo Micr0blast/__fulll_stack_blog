@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { PostData } from '../types'
+import { User } from './User.tsx'
 
 export function Post(data: PostData) {
   return (
@@ -9,7 +10,7 @@ export function Post(data: PostData) {
       {data.author && (
         <em>
           <br />
-          Written by <strong>{data.author}</strong>
+          Written by <strong><User userId={data.author}/></strong>
         </em>
       )}
     </article>

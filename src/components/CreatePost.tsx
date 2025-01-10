@@ -1,17 +1,20 @@
 import { FormEvent, useState } from 'react'
 import { createPost } from '../api/posts.ts'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { PostData } from '../types.ts'
+import { useAuth } from '../contexts/AuthContext.tsx'
+import { jwtDecode } from 'jwt-decode'
 
 export function CreatePost() {
   const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
+  const [token, ] = useAuth()
+
   const [contents, setContents] = useState('')
 
   const queryClient = useQueryClient()
 
+
   const createPostsMutation = useMutation({
-    mutationFn: () => createPost({ title, author, contents }),
+    mutationFn: () => createPost(token, { title, contents }),
     onSuccess: ()=>queryClient.invalidateQueries({queryKey:['posts']}),
   })
 
@@ -19,7 +22,7 @@ export function CreatePost() {
     e.preventDefault()
     createPostsMutation.mutate()
   }
-
+  if (!token) return <div> Login to create posts!</div>
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -30,17 +33,6 @@ export function CreatePost() {
           id='create-title'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <br />
-      <div>
-        <label htmlFor='create-author'>Author: </label>
-        <input
-          type='text'
-          name='create-author'
-          id='create-author'
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
         />
       </div>
       <br />

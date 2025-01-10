@@ -1,5 +1,6 @@
 import { PostData } from "../types"
 
+
 export const getPosts = async (queryParams) => {
   const res = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/posts?` +
@@ -8,10 +9,13 @@ export const getPosts = async (queryParams) => {
   return await res.json()
 }
 
-export const createPost = async (post: PostData) => {
+export const createPost = async (token:string, post: PostData) => {
   const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json' 
+    },
     body: JSON.stringify(post),
   })
 
