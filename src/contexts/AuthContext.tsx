@@ -1,6 +1,10 @@
 import { useContext, createContext, useState, Dispatch, SetStateAction, ReactNode, FC } from "react";
 import PropTypes from 'prop-types'
 
+
+// TODO replacing symmetric keys for asymmetric keys via OAuth
+// TODO store tokens int httpOnly cookies
+// TODO token invalidation
 interface StateContextType {
     token: string | null,
     setToken: Dispatch<SetStateAction<string | null>>

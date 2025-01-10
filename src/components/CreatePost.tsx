@@ -2,7 +2,6 @@ import { FormEvent, useState } from 'react'
 import { createPost } from '../api/posts.ts'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../contexts/AuthContext.tsx'
-import { jwtDecode } from 'jwt-decode'
 
 export function CreatePost() {
   const [title, setTitle] = useState('')
