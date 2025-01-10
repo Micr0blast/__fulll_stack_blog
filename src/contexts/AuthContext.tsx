@@ -2,12 +2,12 @@ import { useContext, createContext, useState, Dispatch, SetStateAction, ReactNod
 import PropTypes from 'prop-types'
 
 interface StateContextType {
-    token: string,
-    setToken: Dispatch<SetStateAction<string>>
+    token: string | null,
+    setToken: Dispatch<SetStateAction<string | null>>
 }
 
 export const AuthContext = createContext<StateContextType>({
-    token: '',
+    token: null,
     setToken: () => {},
 })
 
@@ -16,7 +16,7 @@ interface ContextProviderProps {
 }
 
 export const AuthContextProvider: FC<ContextProviderProps> = ({children}) => {
-    const [token, setToken] = useState<string>('')
+    const [token, setToken] = useState<string | null>(null)
 
     return (
         <AuthContext.Provider value={{token, setToken}}>
@@ -29,7 +29,7 @@ AuthContextProvider.propTypes = {
     children: PropTypes.element.isRequired
 }
 
-export const useAuth = ():[string, Dispatch<SetStateAction<string>>] => {
+export const useAuth = ():[string | null, Dispatch<SetStateAction<string | null>>] => {
     const {token, setToken} = useContext(AuthContext)
     return [token, setToken]
 }
