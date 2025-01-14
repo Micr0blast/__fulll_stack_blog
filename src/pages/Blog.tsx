@@ -7,8 +7,16 @@ import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { PostData } from '../types.ts'
 import { Header } from '../components/Header.tsx'
+import PropTypes from 'prop-types'
+import {Post} from '../components/Post.tsx'
 
-export function Blog() {
+
+interface BlogProps {
+  initialData: PostData[]
+}
+
+
+export function Blog({initialData}: BlogProps) {
   const [author, setAuthor] = useState('')
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('descending')
@@ -16,6 +24,7 @@ export function Blog() {
   const postsQuery = useQuery({
     queryKey: ['posts', { author, sortBy, sortOrder }],
     queryFn: () => getPosts({ author, sortBy, sortOrder }),
+    initialData
   })
 
   const posts: PostData[] = postsQuery.data ?? []
@@ -46,4 +55,9 @@ export function Blog() {
       <PostList posts={posts} />
     </div>
   )
+}
+
+
+Blog.propTypes = {
+  initialData: PropTypes.arrayOf(PropTypes.shape(Post.propTypes))
 }
