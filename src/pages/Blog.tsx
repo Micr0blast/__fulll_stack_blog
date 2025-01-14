@@ -4,17 +4,22 @@ import { PostSorting } from '../components/PostSorting.tsx'
 import { PostList } from '../components/PostList.tsx'
 import { getPosts } from '../api/posts.ts'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState, FC } from 'react'
 import { PostData } from '../types.ts'
 import { Header } from '../components/Header.tsx'
 
 
+import dotenv from 'dotenv'
+dotenv.config()
 
-
-export function Blog() {
+export const Blog: FC = () => {
   const [author, setAuthor] = useState('')
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('descending')
+
+  useEffect(() => {
+    document.title = `Full Stack React Blog`
+  },[])
 
   const postsQuery = useQuery({
     queryKey: ['posts', { author, sortBy, sortOrder }],

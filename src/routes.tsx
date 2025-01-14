@@ -3,9 +3,10 @@ import { SignUp } from "./pages/SignUp.tsx";
 import { Login } from "./pages/Login.tsx";
 import { RouteObject, useLoaderData} from "react-router-dom";
 import {QueryClient, HydrationBoundary, dehydrate} from '@tanstack/react-query'
-import { getPosts } from "./api/posts.ts";
+import { getPosts, getPostById} from "./api/posts.ts";
 import { userDetails } from './api/userAuth.ts'
 import { PostData } from "./types.ts";
+import { PostDetailView } from "./pages/PostDetailView.tsx";
 
 
 export const routes: RouteObject[] = [
@@ -48,7 +49,6 @@ export const routes: RouteObject[] = [
                     <Blog />
                 </HydrationBoundary>
             )
-
         }
     },
     {
@@ -59,4 +59,37 @@ export const routes: RouteObject[] = [
         path: '/login',
         element: <Login />
     },
+    {
+        path: '/posts/:postId/:slug?',
+        loader: async ({params}) => {
+            const queryClient =new QueryClient()
+            const postId = params.postId
+            let post: PostData 
+            if (typeof postId === 'undefined') {
+                post = await getPostById('000000000000000000000000')
+            } else {
+                post = await getPostById(postId)
+            }
+            await queryClient.prefetchQuery({
+                queryKey: ['posts', postId],
+                queryFn: () => post
+            })
+            
+            await queryClient.prefetchQuery({
+                queryKey: ['users', post.author],
+                queryFn: () => userDetails(post.author)
+            })
+            
+
+            return {dehydratedState: dehydrate(queryClient), postId}
+        },
+        Component() {
+            const {dehydratedState, postId} = useLoaderData()
+            return (
+                <HydrationBoundary state={dehydratedState}>
+                    <PostDetailView postId={postId} />
+                </HydrationBoundary>
+            )
+        }
+    }
 ]

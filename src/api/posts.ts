@@ -21,3 +21,13 @@ export const createPost = async (token:string, post: PostData) => {
 
   return await res.json()
 }
+
+export const getPostById = async(postId: string) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/posts/${postId}`,
+    {
+      method: 'GET'
+    }
+  )
+  return await res.json()
+}
