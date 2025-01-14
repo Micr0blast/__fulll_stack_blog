@@ -55,9 +55,54 @@ async function createDevServer() {
   return app
 }
 
-const app = await createDevServer()
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(
-    `ssr dev server running on http://localhost:${process.env.SERVER_PORT}`,
+async function createProductionServer() {
+  const app = express()
+  app.use((await import('compression')).default())
+  app.use(
+    (await import('serve-static')).default(
+      path.resolve(__dirname, 'dist/client'),
+      {
+        index: false,
+      },
+    ),
   )
-})
+  app.use('*', async (req, res, next) => {
+    try {
+      // read index.html synchronously from absolute path using utf-8 encoding
+      const templateHTML = fs.readFileSync(
+        path.resolve(__dirname, 'dist/client/index.html'),
+        'utf-8',
+      )
+
+      const render = (await import('./dist/server/entry-server.js')).render
+      // render the react app on the server side
+      const appHTML = await render(req)
+
+      // place the rendered appHTML into the template
+      const html = await templateHTML.replace(`<!--ssr-outlet-->`, appHTML)
+
+      // send the html to the client witht the appropriate type and HTTP status
+      return res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  return app
+}
+
+if (process.env.NODE_ENV === 'production') {
+  const app = await createProductionServer()
+  app.listen(process.env.SERVER_PORT, () => {
+    console.log(
+      `ssr production server running on http://localhost:${process.env.SERVER_PORT}`,
+    )
+  })
+} else {
+  const app = await createDevServer()
+  app.listen(process.env.SERVER_PORT, () => {
+    console.log(
+      `ssr dev server running on http://localhost:${process.env.SERVER_PORT}`,
+    )
+  })
+}
