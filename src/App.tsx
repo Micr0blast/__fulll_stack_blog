@@ -5,13 +5,11 @@ import PropTypes from 'prop-types'
 export function App({children}) {
   const queryClient = new QueryClient()
   return (
-    <div>
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
         {children}
       </AuthContextProvider>
     </QueryClientProvider>
-    </div>
   )
 }
 
