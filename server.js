@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import express from 'express'
+import { generateSitemap } from './generateSitemap.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -22,6 +23,13 @@ async function createDevServer() {
 
   // for all paths
   app.use('*', async (req, res, next) => {
+    if (req.originalUrl === '/sitemap.xml') {
+      const sitemap = await generateSitemap()
+      return res
+        .status(200)
+        .set({ 'Content-Type': 'application/xml' })
+        .end(sitemap)
+    }
     try {
       // read index.html synchronously from absolute path using utf-8 encoding
       const templateHTML = fs.readFileSync(
@@ -67,6 +75,13 @@ async function createProductionServer() {
     ),
   )
   app.use('*', async (req, res, next) => {
+    if (req.originalUrl === '/sitemap.xml') {
+      const sitemap = await generateSitemap()
+      return res
+        .status(200)
+        .set({ 'Content-Type': 'application/xml' })
+        .end(sitemap)
+    }
     try {
       // read index.html synchronously from absolute path using utf-8 encoding
       const templateHTML = fs.readFileSync(

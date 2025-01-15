@@ -5,6 +5,7 @@ import { createFetchRequest } from './request.ts'
 import {Request as expRequest} from 'express'
 import {routes} from './routes.tsx'
 
+
 const handler = createStaticHandler(routes)
 
 export async function render(req: expRequest ) {
@@ -13,9 +14,9 @@ export async function render(req: expRequest ) {
     const router = createStaticRouter(handler.dataRoutes, context)
 
     return ReactDOMServer.renderToString(
-        <App>
-            <StaticRouterProvider router={router} context={context} />
-        </App>
+            <App>
+                <StaticRouterProvider router={router} context={context} />
+            </App>
     )
 }
 

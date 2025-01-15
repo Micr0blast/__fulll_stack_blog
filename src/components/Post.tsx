@@ -29,7 +29,7 @@ export function Post(data: PostData) {
 
       <em>
         {data.fullPost && (<br />)}
-        Written by <strong><User userId={data.author}/></strong>
+        Written by <User userId={data.author}/>
       </em>
       
     </article>

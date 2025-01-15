@@ -3,7 +3,10 @@ export interface PostData {
     title: string,
     author: string,
     contents: string,
-    fullPost?: boolean
+    fullPost?: boolean,
+    tags?: [string],
+    createdAt: string,
+    updatedAt: string,
 }
 
 export interface LoginDetails{

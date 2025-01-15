@@ -4,22 +4,19 @@ import { PostSorting } from '../components/PostSorting.tsx'
 import { PostList } from '../components/PostList.tsx'
 import { getPosts } from '../api/posts.ts'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState, FC } from 'react'
 import { PostData } from '../types.ts'
 import { Header } from '../components/Header.tsx'
+import { Helmet } from 'react-helmet-async'
+import { useState } from 'react'
 
 
 import dotenv from 'dotenv'
 dotenv.config()
 
-export const Blog: FC = () => {
+export const Blog = () => {
   const [author, setAuthor] = useState('')
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('descending')
-
-  useEffect(() => {
-    document.title = `Full Stack React Blog`
-  },[])
 
   const postsQuery = useQuery({
     queryKey: ['posts', { author, sortBy, sortOrder }],
@@ -30,6 +27,13 @@ export const Blog: FC = () => {
 
   return (
     <div style={{ padding: 8 }}>
+      <Helmet>
+          <title>Full Stack React Blog</title>
+          <meta
+          name='description'
+          content='A blog full of articles about full-stack React development.'
+        />
+      </Helmet>
       <Header/>
       <br/>
       <hr/>

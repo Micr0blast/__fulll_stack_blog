@@ -70,16 +70,18 @@ export const routes: RouteObject[] = [
             } else {
                 post = await getPostById(postId)
             }
+
             await queryClient.prefetchQuery({
-                queryKey: ['posts', postId],
+                queryKey: ['post', postId],
                 queryFn: () => post
             })
             
-            await queryClient.prefetchQuery({
-                queryKey: ['users', post.author],
-                queryFn: () => userDetails(post.author)
-            })
-            
+            if (post?.author){
+                await queryClient.prefetchQuery({
+                    queryKey: ['users', post.author],
+                    queryFn: () => userDetails(post.author)
+                })
+             }
 
             return {dehydratedState: dehydrate(queryClient), postId}
         },
