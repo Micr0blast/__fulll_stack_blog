@@ -9,6 +9,7 @@ const queryClient = new QueryClient()
 
 export function App({children}) {
   return (
+    <>
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
@@ -16,7 +17,8 @@ export function App({children}) {
         </AuthContextProvider>
       
       </QueryClientProvider>  
-      </HelmetProvider>
+    </HelmetProvider>
+    </>
   )
 }
 

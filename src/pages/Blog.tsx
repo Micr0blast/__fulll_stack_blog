@@ -10,9 +10,6 @@ import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 
 
-import dotenv from 'dotenv'
-dotenv.config()
-
 export const Blog = () => {
   const [author, setAuthor] = useState('')
   const [sortBy, setSortBy] = useState('createdAt')

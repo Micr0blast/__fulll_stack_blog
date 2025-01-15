@@ -7,12 +7,10 @@ import { App } from './App.tsx'
 const router = createBrowserRouter(routes)
 
 ReactDOM.hydrateRoot(
-  document.getElementById('root') as HTMLElement,
-
+  document.querySelector('#root') as HTMLElement,
   <React.StrictMode>
       <App>
         <RouterProvider router={router} />
       </App>
   </React.StrictMode>
-
 )
