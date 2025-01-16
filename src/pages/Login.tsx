@@ -14,7 +14,7 @@ export const Login: FC = () => {
     const loginMutation = useMutation({
         mutationFn: () => login({username, password}),
         onSuccess: (data) => {
-            setToken(data.token),
+            setToken(data.token)
             navigate('/')
         },
         onError: () => alert(`login failed`)
@@ -31,7 +31,7 @@ export const Login: FC = () => {
                         <hr/>
                         <br/>
             <div>
-                <label>Username:</label>
+                <label htmlFor="login-username">Username:</label>
                 <input 
                     type='text'
                     id='login-username'
@@ -41,7 +41,7 @@ export const Login: FC = () => {
             </div>
 
             <div>
-                <label>Password:</label>
+                <label htmlFor="login-password">Password:</label>
                 <input 
                     type='text'
                     id='login-password'

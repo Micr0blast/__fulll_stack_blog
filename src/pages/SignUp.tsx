@@ -36,7 +36,7 @@ export function SignUp() {
             </div>
             <br/>
             <div>
-                <label>Password:</label>
+                <label htmlFor="create-password">Password:</label>
                 <input 
                     type='text'
                     id='create-password'
