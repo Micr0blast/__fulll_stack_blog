@@ -15,6 +15,10 @@
     "plugin:jsx-a11y/recommended",
     "prettier"
   ],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
   "settings": {
     "react": {
       "version": "detect"
