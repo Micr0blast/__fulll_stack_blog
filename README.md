@@ -1,8 +1,19 @@
-# React + Vite
+# Experimental project for learning React + Vite, CI/CD using GitHub Workflows and combined JS and TS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Code is based on Daniel Bugl's book: Modern Full-Stack React Projects
 
-Currently, two official plugins are available:
+Currently on:
+- Implementing E2E testing
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Deviations include:
+- Using TS for Frontend
+- Updated Dependencies
+- Extended Backend Model for Users with testing
+
+Lessons learned thus far:
+- Split backend and frontend into separate projects with dependencies, especially when using JS and TS for one or the other
+- Dependency hell is only as real as you let it
+- Git Hooks are awesome!
+- Eslint 9 is not a yet a good fit for the book contents.
+
+
